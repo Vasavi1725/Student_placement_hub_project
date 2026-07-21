@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0B0E1A;
+  --bg-elev: #10142A;
+  --glass: rgba(255,255,255,0.045);
+  --glass-brd: rgba(255,255,255,0.09);
+  --text: #F1F1F8;
+  --text-dim: #94A3B8;
+  --text-faint: #5B6478;
+}
+.light {
+  --bg: #F3F4FB;
+  --bg-elev: #FFFFFF;
+  --glass: rgba(255,255,255,0.65);
+  --glass-brd: rgba(30,27,46,0.08);
+  --text: #1B1830;
+  --text-dim: #5B5875;
+  --text-faint: #9B98B0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  background-image:
+    radial-gradient(circle at 12% 8%, rgba(99,102,241,0.16), transparent 45%),
+    radial-gradient(circle at 90% 15%, rgba(168,85,247,0.13), transparent 40%);
+  background-attachment: fixed;
+}
+
+.glass-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-brd);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 16px;
+}
+
+.bar-track { height: 6px; border-radius: 6px; background: rgba(255,255,255,0.08); overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 6px; background: linear-gradient(120deg,#6366F1,#A855F7); }
