@@ -3,14 +3,21 @@ import Sidebar from "@/components/Sidebar";
 import TopicBody from "./TopicBody";
 import { notFound } from "next/navigation";
 
-export default async function TopicPage({ params }: { params: { slug: string } }) {
+type PageProps = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
+
+export default async function TopicPage({ params }: PageProps) {
+  const { slug } = await params;
   const supabase = createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   const { data: topic } = await supabase
     .from("topics")
     .select("*, subjects(name, slug)")
-    .eq("slug", params.slug)
+    .eq("slug", slug)
     .single();
 
   if (!topic) notFound();
