@@ -4,10 +4,17 @@ import { notFound } from "next/navigation";
 
 type Section = { name: string; questions: number; minutes: number; difficulty: string };
 
-export default async function CompanyPage({ params }: { params: { slug: string } }) {
+type PageProps = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
+
+export default async function CompanyPage({ params }: PageProps) {
+  const { slug } = await params;
   const supabase = createClient();
   const [{ data: company }, { data: allCompanies }] = await Promise.all([
-    supabase.from("companies").select("*").eq("slug", params.slug).single(),
+    supabase.from("companies").select("*").eq("slug", slug).single(),
     supabase.from("companies").select("slug, name"),
   ]);
 
@@ -22,7 +29,7 @@ export default async function CompanyPage({ params }: { params: { slug: string }
 
         <div className="grid grid-cols-4 gap-3 mb-8">
           {(allCompanies ?? []).map((c) => (
-            <a key={c.slug} href={`/companies/${c.slug}`} className={`glass-card p-4 text-center block ${c.slug === params.slug ? "border-vio" : ""}`}>
+            <a key={c.slug} href={`/companies/${c.slug}`} className={`glass-card p-4 text-center block ${c.slug === slug ? "border-vio" : ""}`}>
               <div className="w-11 h-11 rounded-xl bg-grad-brand mx-auto mb-2.5 flex items-center justify-center font-display font-bold text-white text-sm">
                 {c.name.slice(0, 2).toUpperCase()}
               </div>
