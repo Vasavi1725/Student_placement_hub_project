@@ -3,7 +3,7 @@ import Sidebar from "@/components/Sidebar";
 import ProgressRing from "@/components/ProgressRing";
 
 export default async function DashboardPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   // Pull everything the dashboard needs in parallel.

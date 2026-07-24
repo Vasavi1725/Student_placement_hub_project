@@ -19,7 +19,7 @@ const tabs = ["Overview", "Formulas & Tricks", "Solved Examples", "Practice", "V
 export default function TopicBody({
   topic, questions, initialStatus, initialNote, userId,
 }: { topic: Topic; questions: Question[]; initialStatus: string; initialNote: string; userId: string }) {
-  const supabase = createClient();
+  const  supabase = createClient();
   const [active, setActive] = useState(0);
   const [status, setStatus] = useState(initialStatus);
   const [note, setNote] = useState(initialNote);
