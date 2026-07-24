@@ -11,8 +11,13 @@ type PageProps = {
 
 export default async function TopicPage({ params }: PageProps) {
   const { slug } = await params;
-  const supabase = createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+
+  // ✅ await createClient()
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data: topic } = await supabase
     .from("topics")
@@ -22,11 +27,22 @@ export default async function TopicPage({ params }: PageProps) {
 
   if (!topic) notFound();
 
-  const [{ data: questions }, { data: progress }, { data: note }] = await Promise.all([
-    supabase.from("questions").select("*").eq("topic_id", topic.id),
-    supabase.from("progress").select("*").eq("user_id", user!.id).eq("topic_id", topic.id).maybeSingle(),
-    supabase.from("notes").select("*").eq("user_id", user!.id).eq("topic_id", topic.id).maybeSingle(),
-  ]);
+  const [{ data: questions }, { data: progress }, { data: note }] =
+    await Promise.all([
+      supabase.from("questions").select("*").eq("topic_id", topic.id),
+      supabase
+        .from("progress")
+        .select("*")
+        .eq("user_id", user!.id)
+        .eq("topic_id", topic.id)
+        .maybeSingle(),
+      supabase
+        .from("notes")
+        .select("*")
+        .eq("user_id", user!.id)
+        .eq("topic_id", topic.id)
+        .maybeSingle(),
+    ]);
 
   return (
     <div className="grid grid-cols-[250px_1fr] min-h-screen">

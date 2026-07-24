@@ -1,9 +1,9 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
-// Server-side Supabase client — use inside Server Components, Route Handlers, and Server Actions.
-export function createClient() {
-  const cookieStore = cookies();
+// Server-side Supabase client for Next.js 15
+export async function createClient() {
+  const cookieStore = await cookies();
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -15,16 +15,24 @@ export function createClient() {
         },
         set(name: string, value: string, options: CookieOptions) {
           try {
-            cookieStore.set({ name, value, ...options });
+            cookieStore.set({
+              name,
+              value,
+              ...options,
+            });
           } catch {
-            // called from a Server Component — safe to ignore, middleware refreshes the session
+            // Ignore when called from a Server Component.
           }
         },
         remove(name: string, options: CookieOptions) {
           try {
-            cookieStore.set({ name, value: "", ...options });
+            cookieStore.set({
+              name,
+              value: "",
+              ...options,
+            });
           } catch {
-            // same as above
+            // Ignore when called from a Server Component.
           }
         },
       },
